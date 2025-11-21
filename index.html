@@ -2,27 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>QR Landing Page</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        padding: 20px;
-      }
-    </style>
+    <title>Worker Info</title>
   </head>
   <body>
-    <h2>Informasi:</h2>
+    <h2>Informasi Worker</h2>
     <div id="content">Loading...</div>
 
     <script>
-      fetch("data.json?cache=" + Date.now()) // mencegah browser menyimpan cache
-        .then(r => r.json())
-        .then(d => {
-          document.getElementById("content").innerText = d.text;
-        })
-        .catch(e => {
-          document.getElementById("content").innerText = "Gagal memuat data.";
-        });
+      // Ambil parameter id dari URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+
+      if (!id) {
+        document.getElementById("content").innerText = "Visitor ID tidak ditemukan.";
+      } else {
+        fetch(`data/${id}.json?cache=` + Date.now())
+          .then(r => r.json())
+          .then(d => {
+            document.getElementById("content").innerText = d.text;
+          })
+          .catch(e => {
+            document.getElementById("content").innerText = "Data visitor tidak ditemukan.";
+          });
+      }
     </script>
   </body>
 </html>

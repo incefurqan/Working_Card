@@ -1,5 +1,28 @@
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>QR Landing Page</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+    </style>
+  </head>
   <body>
-    Hello! This is my GitHub Pages test.
+    <h2>Informasi:</h2>
+    <div id="content">Loading...</div>
+
+    <script>
+      fetch("data.json?cache=" + Date.now()) // mencegah browser menyimpan cache
+        .then(r => r.json())
+        .then(d => {
+          document.getElementById("content").innerText = d.text;
+        })
+        .catch(e => {
+          document.getElementById("content").innerText = "Gagal memuat data.";
+        });
+    </script>
   </body>
 </html>

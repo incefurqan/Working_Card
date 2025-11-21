@@ -1,36 +1,51 @@
-<script>
-  window.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    console.log("ID dari URL:", id);
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Worker Card</title>
+  </head>
 
-    if (!id) {
-      document.getElementById("content").innerText =
-        "Worker Card ID tidak ditemukan.";
-      return;
-    }
+  <body>
+    <h2>Informasi Worker</h2>
 
-    fetch(`data/${id}.json?cache=` + Date.now())
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("HTTP error " + response.status);
+    <!-- BAGIAN INI YANG WAJIB ADA -->
+    <div id="content">Loading...</div>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        console.log("ID dari URL:", id);
+
+        if (!id) {
+          document.getElementById("content").innerText =
+            "Worker Card ID tidak ditemukan.";
+          return;
         }
-        return response.json();
-      })
-      .then((data) => {
-        document.getElementById("content").innerHTML = `
-          <strong>Nama:</strong> ${data.nama}<br>
-          <strong>NIK:</strong> ${data.nik}<br>
-          <strong>Start Date:</strong> ${data.start_date}<br>
-          <strong>Expired Date:</strong> ${data.expired_date}<br>
-          <strong>User:</strong> ${data.user}<br>
-          <strong>Notes:</strong> ${data.notes}
-        `;
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-        document.getElementById("content").innerText =
-          "Gagal memuat data.";
+
+        fetch("data/" + id + ".json?cache=" + Date.now())
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("HTTP error " + response.status);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            document.getElementById("content").innerHTML = `
+              <strong>Nama:</strong> ${data.nama}<br>
+              <strong>NIK:</strong> ${data.nik}<br>
+              <strong>Start Date:</strong> ${data.start_date}<br>
+              <strong>Expired Date:</strong> ${data.expired_date}<br>
+              <strong>User:</strong> ${data.user}<br>
+              <strong>Notes:</strong> ${data.notes}
+            `;
+          })
+          .catch((error) => {
+            console.error("Fetch error:", error);
+            document.getElementById("content").innerText =
+              "Gagal memuat data.";
+          });
       });
-  });
-</script>
+    </script>
+  </body>
+</html>

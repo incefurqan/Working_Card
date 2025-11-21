@@ -2,29 +2,39 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Worker Info</title>
+    <title>Visitor Info</title>
   </head>
   <body>
-    <h2>Informasi Worker</h2>
+    <h2>Informasi Visitor</h2>
     <div id="content">Loading...</div>
 
     <script>
-      // Ambil parameter id dari URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get("id");
+      // Tunggu sampai DOM siap
+      window.addEventListener("DOMContentLoaded", function() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        console.log("ID dari URL:", id);
 
-      if (!id) {
-        document.getElementById("content").innerText = "Worker Card ID tidak ditemukan.";
-      } else {
-        fetch(`data/${id}.json?cache=` + Date.now())
-          .then(r => r.json())
-          .then(d => {
-            document.getElementById("content").innerText = d.text;
-          })
-          .catch(e => {
-            document.getElementById("content").innerText = "Data worker tidak ditemukan.";
-          });
-      }
+        if (!id) {
+          document.getElementById("content").innerText = "Visitor ID tidak ditemukan.";
+        } else {
+          fetch(`data/${id}.json?cache=` + Date.now())
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("HTTP error " + response.status);
+              }
+              return response.json();
+            })
+            .then(data => {
+              // Misalnya data punya atribut .text
+              document.getElementById("content").innerText = data.text;
+            })
+            .catch(error => {
+              console.error("Fetch error:", error);
+              document.getElementById("content").innerText = "Gagal memuat data.";
+            });
+        }
+      });
     </script>
   </body>
 </html>

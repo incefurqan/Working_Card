@@ -14,7 +14,7 @@
       const id = urlParams.get("id");
 
       if (!id) {
-        document.getElementById("content").innerText = "Visitor ID tidak ditemukan.";
+        document.getElementById("content").innerText = "Worker Card ID tidak ditemukan.";
       } else {
         fetch(`data/${id}.json?cache=` + Date.now())
           .then(r => r.json())
@@ -22,7 +22,7 @@
             document.getElementById("content").innerText = d.text;
           })
           .catch(e => {
-            document.getElementById("content").innerText = "Data visitor tidak ditemukan.";
+            document.getElementById("content").innerText = "Data worker tidak ditemukan.";
           });
       }
     </script>

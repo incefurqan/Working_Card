@@ -6,13 +6,17 @@
   </head>
   <body>
     <h2>Informasi Worker</h2>
+
+    <!-- WAJIB ADA -->
     <div id="content">Loading...</div>
 
     <script>
       window.addEventListener("DOMContentLoaded", function () {
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
-        console.log("ID dari URL:", id);
+
+        // sanitize ID
+        const rawId = params.get("id");
+        const id = rawId ? rawId.split(/[?#]/)[0] : null;
 
         if (!id) {
           document.getElementById("content").innerText =
@@ -22,9 +26,7 @@
 
         fetch("data/" + id + ".json?cache=" + Date.now())
           .then((response) => {
-            if (!response.ok) {
-              throw new Error("HTTP error " + response.status);
-            }
+            if (!response.ok) throw new Error("HTTP error " + response.status);
             return response.json();
           })
           .then((data) => {
